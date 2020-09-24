@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Link, NavLink, Route, Switch } from 'react-router-dom';
 
 import ListMovies from './components/Movies/ListMovies';
 import ListShifts from './components/Shifts/ListShifts';
@@ -15,22 +15,22 @@ export default function App() {
             <aside>
               <ul>
                 <li>
-                  <Link to="/">Dashboard</Link>
+                  <NavLink activeClassName="is-active" to="/dashboard">Dashboard</NavLink>
                 </li>
                 <li>
-                  <Link to="/movies">Películas</Link>
+                  <NavLink activeClassName="is-active" to="/movies">Películas</NavLink>
                 </li>
                 <li>
-                  <Link to="/shifts">Turnos</Link>
+                  <NavLink activeClassName="is-active" to="/shifts">Turnos</NavLink>
                 </li>
                 <li>
-                  <Link to="/shoelaces">Administradores</Link>
+                  <NavLink activeClassName="is-active" to="/admin">Administradores</NavLink>
                 </li>
                 <li>
-                  <Link to="/shoelaces">Perfil</Link>
+                  <NavLink activeClassName="is-active" to="/profile">Perfil</NavLink>
                 </li>
                 <li>
-                  <Link to="/shoelaces">Cerrar sesión</Link>
+                  <NavLink activeClassName="is-active" to="/session">Cerrar sesión</NavLink>
                 </li>
               </ul>
             </aside>
