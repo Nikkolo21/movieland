@@ -3,28 +3,34 @@ import CustomModal from '../../Modals';
 import { MdDelete } from "react-icons/md";
 import { Button } from '@material-ui/core';
 import { deleteMovie } from '../../../api/movieService';
+import './DeleteMovie.scss';
 
 export default function DeleteMovie(props) {
     const [open, setOpen] = useState(false);
-    const {id} = props;
+    const {id, callbackFn} = props;
 
     const handleModal = () => {
         setOpen(!open);
     };
     
     const onSubmit = () => {
-        deleteMovie(id, () => handleModal(), error => console.log(error));
+        deleteMovie(id, () => {
+            callbackFn();
+            handleModal();
+        }, error => {
+            console.log(error);
+        });
     };
     
     const body = (
-        <div style={{background: 'white', padding: 40, width: '100%', maxWidth: 500}}>
-            <h2 id="modal-title" style={{textAlign: 'center'}}>Eliminar Película</h2>
-            <div id="modal-body" style={{textAlign: 'center'}}>
+        <div className="modal-body">
+            <h2 id="modal-title" className="text-center">Eliminar Película</h2>
+            <div id="modal-body" className="text-center">
                 <p>¿Está seguro de eliminar esta película?</p>
-                <Button style={{marginLeft: 5}} variant="contained" size="medium" color="default" onClick={handleModal}>
+                <Button className="modal-button" variant="contained" size="medium" color="default" onClick={handleModal}>
                     Cancelar
                 </Button>
-                <Button style={{marginLeft: 5}} variant="contained" size="medium" color="primary" onClick={onSubmit}>
+                <Button className="modal-button" variant="contained" size="medium" color="primary" onClick={onSubmit}>
                     Eliminar
                 </Button>
             </div>
@@ -33,7 +39,7 @@ export default function DeleteMovie(props) {
 
     return (
     <>
-        <MdDelete onClick={handleModal} title="Eliminar" style={{marginLeft: 10, fontSize: "1.5em", cursor: "pointer"}}/>
+        <MdDelete onClick={handleModal} title="Eliminar" className="delete-icon"/>
         <CustomModal open={open} handleModal={handleModal} body={body} />
     </>
     )

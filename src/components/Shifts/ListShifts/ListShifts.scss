@@ -1,0 +1,18 @@
+.list-shifts-body {
+    max-width: 1000px;
+    .top-bar {
+        justify-content: space-between;
+        display: flex;
+        padding: 20px;
+        .btn {
+            font-size: 10px;
+        }
+        span {
+            text-align: left;
+            font-size: 1.5em;
+        }
+    }
+    .table-container {
+        box-shadow: none;
+    }
+}

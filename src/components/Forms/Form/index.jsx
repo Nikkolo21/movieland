@@ -34,7 +34,7 @@ export default function Form(props) {
                     />
                 )
             }
-            <div style={{textAlign: 'center'}}>
+            <div className="text-center">
                 <Button variant="contained" size="medium" color="primary" type="submit">
                     Guardar
                 </Button>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +11,7 @@ import CreateShift from '../CreateShift';
 import EditShift from '../EditShift';
 import { getShifts } from '../../../api/shiftService';
 import DeleteShift from '../DeleteShift';
+import './ListShifts.scss';
 
 const useStyles = makeStyles({
   table: {
@@ -19,7 +20,6 @@ const useStyles = makeStyles({
     shadows: "none"
   },
 });
-
 
 const headers = [
   {
@@ -48,17 +48,21 @@ export default function ListShifts() {
   const [rows, setRows] = useState(null);
   const classes = useStyles();
 
-  useEffect(() => {
+  
+  const getShiftsFn = useCallback(() => {
     const data = [];
+    const getActionsButtons = (id, data) => (
+      <>
+        <EditShift id={id} data={data} callbackFn={getShiftsFn}/>
+        <DeleteShift id={id} callbackFn={getShiftsFn}/>
+      </>
+    )
+
     getShifts(resp => {
       resp.forEach(e => data.push({
         id: e.id,
         ...e.data(),
-        actions:
-        <>
-          <EditShift id={e.id} data={e.data()}/>
-          <DeleteShift id={e.id}/>
-        </>
+        actions: getActionsButtons(e.id, e.data())
       }));
       setRows(data);
     }, error => {
@@ -66,13 +70,17 @@ export default function ListShifts() {
     });
   }, []);
 
+  useEffect(() => {
+    getShiftsFn();
+  }, [getShiftsFn]);
+
   return (
-    <section style={{maxWidth: 1000}}>
-        <div style={{justifyContent: "space-between", display:"flex", padding: 20}}>
-            <span style={{textAlign: "left", fontSize: "1.5em"}}>Turnos</span>
-            <CreateShift/>
+    <section className="list-shifts-body">
+        <div className="top-bar">
+            <span>Turnos</span>
+            <CreateShift callbackFn={getShiftsFn} />
         </div>
-        <TableContainer component={Paper} style={{boxShadow: "none"}}>
+        <TableContainer component={Paper} className="table-container">
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                 <TableRow>

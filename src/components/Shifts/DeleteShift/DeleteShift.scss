@@ -1,0 +1,15 @@
+.modal-body {
+    background: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    .modal-button {
+        margin-left: 5px;
+    }
+}
+
+.delete-icon {
+    margin-left: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+}

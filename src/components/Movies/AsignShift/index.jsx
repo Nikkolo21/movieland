@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CustomModal from '../../Modals';
 import { MdMenu } from "react-icons/md";
 import { editMovie, getMovie } from '../../../api/movieService';
 import { getActiveShifts } from '../../../api/shiftService';
 import { Button } from '@material-ui/core';
+import './AsignShift.scss';
 
 export default function AsignShift(props) {
     const [open, setOpen] = useState(false);
@@ -11,14 +12,13 @@ export default function AsignShift(props) {
     const [movieShifts, setMovieShifts] = useState(null);
     const {id} = props;
 
-    useEffect(() => {
+    const getShiftsFn = useCallback(() => {
         getActiveShifts(resp => {
             const data = [];
             resp.forEach(e => data.push({
                 id: e.id,
                 ...e.data()
             }));
-
             getMovie(id, resp => {
                 setShifts(data.map(elem => ({...elem, checked: resp.data().shifts.includes(elem.id)})));
                 setMovieShifts(resp.data().shifts);
@@ -29,15 +29,23 @@ export default function AsignShift(props) {
         }, error => {
           console.log(error);
         });
+    }, [id])
 
-      }, [id]);
+    useEffect(() => {
+        getShiftsFn();
+      }, [getShiftsFn]);
 
     const handleModal = () => {
         setOpen(!open);
     };
 
     const onSubmit = () => {
-        editMovie(id, {shifts: movieShifts}, () => handleModal(), error => console.log(error));
+        editMovie(id, {shifts: movieShifts}, () => {
+            getShiftsFn();
+            handleModal();
+        }, error => {
+            console.log(error);
+        });
     };
 
     const changeMovieShift = (shift) => {
@@ -48,13 +56,13 @@ export default function AsignShift(props) {
     }
     
     const body = (
-        <div style={{background: 'white', padding: 40, width: '100%', maxWidth: 500}}>
-            <h2 id="modal-title" style={{textAlign: 'center'}}>Asignar turnos</h2>
+        <div className="modal-body">
+            <h2 id="modal-title">Asignar turnos</h2>
             <div id="modal-body">
-                <div style={{display: 'flex'}}>
+                <div className="modal-content">
                     {
                         shifts && shifts.sort((a, b) => a.shift.localeCompare(b.shift)).map(
-                            (elem, index) => <div key={index} style={{textAlign: 'center', padding: 10, marginLeft: 5, backgroundColor: "rgb(237, 247, 255)"}}>
+                            (elem, index) => <div className="shifts" key={index}>
                                 
                                 <input type="checkbox" id={elem.shift} name="shift" value={elem.id} onClick={() => changeMovieShift(elem.id)} defaultChecked={elem.checked}/>
                                 <label htmlFor={elem.shift}>{elem.shift}</label>
@@ -63,7 +71,7 @@ export default function AsignShift(props) {
                     }
                 </div>
                 
-                <div style={{textAlign: 'center', marginTop: 20}}>
+                <div className="modal-footer">
                     <Button variant="contained" size="medium" color="primary" onClick={onSubmit}>
                         Guardar
                     </Button>
@@ -74,7 +82,7 @@ export default function AsignShift(props) {
 
     return (
     <>
-        <MdMenu onClick={handleModal} title="Asignar turnos" style={{marginLeft: 10, fontSize: "1.5em", cursor: "pointer"}}/>
+        <MdMenu onClick={handleModal} title="Asignar turnos" className="menu-icon"/>
         <CustomModal open={open} handleModal={handleModal} body={body} />
     </>
     )

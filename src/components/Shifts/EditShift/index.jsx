@@ -4,11 +4,12 @@ import CustomModal from '../../Modals';
 import Form from '../../Forms/Form';
 import { MdModeEdit } from "react-icons/md";
 import { editShift } from '../../../api/shiftService';
+import './EditShift.scss';
 
 export default function EditShift(props) {
     const [shift, setShift] = useState({});
     const [open, setOpen] = useState(false);
-    const {id, data} = props;
+    const {id, data, callbackFn} = props;
 
     useEffect(() => {
         setShift(data);
@@ -19,12 +20,17 @@ export default function EditShift(props) {
     };
     
     const onSubmit = elem => {
-        editShift(id, elem, () => handleModal(), error => console.log(error));
+        editShift(id, elem, () => {
+            handleModal();
+            callbackFn();
+        }, error => {
+            console.log(error);
+        });
     };
     
     const body = (
-        <div style={{background: 'white', padding: 40, width: '100%', maxWidth: 500}}>
-            <h2 id="modal-title" style={{textAlign: 'center'}}>Editar Turno</h2>
+        <div className="modal-body">
+            <h2 id="modal-title">Editar Turno</h2>
             <div id="modal-body">
                 <Form onSubmit={onSubmit} formElem={editShiftForm(shift)} />
             </div>
@@ -33,7 +39,7 @@ export default function EditShift(props) {
 
     return (
     <>
-        <MdModeEdit onClick={handleModal} title="Editar" style={{marginLeft: 10, fontSize: "1.5em", cursor: "pointer"}}/>
+        <MdModeEdit onClick={handleModal} title="Editar" className="edit-icon"/>
         <CustomModal open={open} handleModal={handleModal} body={body} />
     </>
     )

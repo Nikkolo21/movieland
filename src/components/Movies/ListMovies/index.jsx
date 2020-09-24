@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,6 +13,8 @@ import EditMovie from '../EditMovie';
 import { getMovies } from '../../../api/movieService';
 import DeleteMovie from '../DeleteMovie';
 import AsignShift from '../AsignShift';
+
+import './ListMovies.scss';
 
 const useStyles = makeStyles({
   table: {
@@ -54,35 +56,43 @@ export default function ListMovies() {
   const [rows, setRows] = useState(null);
   const classes = useStyles();
 
-  useEffect(() => {
+  
+  const getMoviesFn = useCallback(() => {
     const data = [];
+    const getActionsButtons = (id, data) => (
+      <>
+        <EditMovie id={id} data={data} callbackFn={getMoviesFn}/>
+        <AsignShift id={id} />
+        <DeleteMovie id={id} callbackFn={getMoviesFn}/>
+      </>
+    );
+
     getMovies(resp => {
       resp.forEach(e => data.push({
         id: e.id,
         ...e.data(),
-        actions:
-        <>
-          <EditMovie id={e.id} data={e.data()}/>
-          <AsignShift id={e.id} />
-          <DeleteMovie id={e.id}/>
-        </>
+        actions: getActionsButtons(e.id, e.data())
       }));
       setRows(data);
       return resp;
     }, error => {
       console.log(error);
     });
-  }, []);
+  }, [])
+
+  useEffect(() => {
+    getMoviesFn();
+  }, [getMoviesFn]);
 
 
 
   return (
-    <section style={{maxWidth: 1000}}>
-        <div style={{justifyContent: "space-between", display:"flex", padding: 20}}>
-            <span style={{textAlign: "left", fontSize: "1.5em"}}>Películas</span>
-            <CreateMovie/>
+    <section className="list-movies-body">
+        <div className="top-bar">
+            <span>Películas</span>
+            <CreateMovie callbackFn={getMoviesFn}/>
         </div>
-        <TableContainer component={Paper} style={{boxShadow: "none"}}>
+        <TableContainer component={Paper} className="table-container">
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                 <TableRow>
