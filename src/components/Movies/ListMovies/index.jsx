@@ -7,12 +7,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { MdMenu } from "react-icons/md";
 
 import CreateMovie from '../CreateMovie';
 import EditMovie from '../EditMovie';
 import { getMovies } from '../../../api/movieService';
 import DeleteMovie from '../DeleteMovie';
+import AsignShift from '../AsignShift';
 
 const useStyles = makeStyles({
   table: {
@@ -63,7 +63,7 @@ export default function ListMovies() {
         actions:
         <>
           <EditMovie id={e.id} data={e.data()}/>
-          <MdMenu title="Asignar turno" style={{marginLeft: 10, fontSize: "1.5em", cursor: "pointer"}}/>
+          <AsignShift id={e.id} />
           <DeleteMovie id={e.id}/>
         </>
       }));

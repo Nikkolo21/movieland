@@ -14,7 +14,7 @@ export default function CreateMovie() {
     };
     
     const onSubmit = elems => {
-        createMovie({...elems, created_at: moment().format("YYYY-MM-DD")}, resp => {
+        createMovie({...elems, shifts: [], created_at: moment().format("YYYY-MM-DD")}, resp => {
             handleModal();
         }, error => {
             console.log(error);

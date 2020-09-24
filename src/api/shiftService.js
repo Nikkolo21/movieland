@@ -8,6 +8,10 @@ export const getShifts = (thenFn, catchFn) => {
     firestoreDB.collection("shifts").get().then(thenFn).catch(catchFn);
 }
 
+export const getActiveShifts = (thenFn, catchFn) => {
+    firestoreDB.collection("shifts").where("status", "==", "Activo").get().then(thenFn).catch(catchFn);
+}
+
 export const getShift = (id, thenFn, catchFn) => {
     firestoreDB.collection("shifts").doc(id).get().then(thenFn).catch(catchFn);
 }
