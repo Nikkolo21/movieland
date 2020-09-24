@@ -14,10 +14,11 @@ export const editShiftForm = ({shift, status}) => ([
         title: "Estado*",
         inputType: "text",
         type: "primary",
-        placeholder: "My Shift status", 
+        placeholder: "My Shift status",
         minLenght: 2,
         maxLenght: 30,
         required: true,
-        value: status
+        value: status,
+        dropdown: true
     }
 ])

@@ -33,6 +33,7 @@ export const editMovieForm = ({name, pub_date, status}) => ([
         minLenght: 2,
         maxLenght: 30,
         required: true,
-        value: status
+        value: status,
+        dropdown: true
     }
 ])

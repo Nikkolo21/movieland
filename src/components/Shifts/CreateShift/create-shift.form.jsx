@@ -19,6 +19,7 @@ export const createShiftForm = [
         placeholder: "My shift status", 
         minLenght: 2,
         maxLenght: 30,
-        required: true
+        required: true,
+        dropdown: true
     }
 ]

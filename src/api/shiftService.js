@@ -15,3 +15,7 @@ export const getShift = (id, thenFn, catchFn) => {
 export const editShift = (id, data, thenFn, catchFn) => {
     firestoreDB.collection("shifts").doc(id).set(data, { merge: true }).then(thenFn).catch(catchFn);
 }
+
+export const deleteShift = (id, thenFn, catchFn) => {
+    firestoreDB.collection("shifts").doc(id).delete().then(thenFn).catch(catchFn);
+}

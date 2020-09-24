@@ -30,6 +30,7 @@ export default function Form(props) {
                         defaultValue={elem.value}
                         max={elem.max}
                         step={elem.step}
+                        dropdown={elem.dropdown}
                     />
                 )
             }

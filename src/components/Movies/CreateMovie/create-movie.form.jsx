@@ -30,6 +30,7 @@ export const createMovieForm = [
         placeholder: "My project status", 
         minLenght: 2,
         maxLenght: 30,
+        dropdown: true,
         required: true
     }
 ]

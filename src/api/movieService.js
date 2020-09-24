@@ -15,3 +15,7 @@ export const getMovie = (id, thenFn, catchFn) => {
 export const editMovie = (id, data, thenFn, catchFn) => {
     firestoreDB.collection("movies").doc(id).set(data, { merge: true }).then(thenFn).catch(catchFn);
 }
+
+export const deleteMovie = (id, thenFn, catchFn) => {
+    firestoreDB.collection("movies").doc(id).delete().then(thenFn).catch(catchFn);
+}

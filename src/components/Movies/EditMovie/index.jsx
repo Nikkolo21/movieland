@@ -19,8 +19,7 @@ export default function EditMovie(props) {
     };
 
     const onSubmit = elem => {
-        editMovie(id, elem, resp => console.log(resp), error => console.log(error));
-        handleModal();
+        editMovie(id, elem, () => handleModal(), error => console.log(error));
     };
     
     const body = (

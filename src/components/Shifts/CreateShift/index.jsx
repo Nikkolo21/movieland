@@ -15,7 +15,6 @@ export default function CreateShift() {
     
     const onSubmit = elems => {
         createShift({...elems, created_at: moment().format("YYYY-MM-DD")}, resp => {
-            console.log(resp);
             handleModal();
         }, error => {
             console.log(error);
