@@ -12,13 +12,15 @@ export default function Input(props) {
         minLength="",
         maxLength="",
         inputRef= () => {},
-        errors=false
+        errors=false,
+        max,
+        step
     } = props;
 
     return (
         <div className="input-box">
             <span>{title}</span>
-            <input name={inputName} defaultValue={defaultValue} className={`input input-${type}`} type={inputType} placeholder={placeholder} ref={inputRef}/>
+            <input name={inputName} defaultValue={defaultValue} className={`input input-${type}`} type={inputType} placeholder={placeholder} ref={inputRef} max={max} step={step} />
             {errors && errors.type === "required" && <small className="error">Es requerido</small>}
             {errors && errors.type === "pattern" && <small className="error">Verifica el campo</small>}
             {errors && errors.type === "minLength" && <small className="error">Tamaño mínimo: {minLength}</small>}

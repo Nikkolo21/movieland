@@ -1,27 +1,32 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import { createMovieForm } from './create-movie.form';
+import { createShiftForm } from './create-shift.form';
 import CustomModal from '../../Modals';
 import Form from '../../Forms/Form';
+import { createShift } from '../../../api/shiftService';
+import moment from 'moment';
 
-export default function CreateMovie() {
+export default function CreateShift() {
     const [open, setOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
 
     const handleModal = () => {
         setOpen(!open);
     };
     
-    const onSubmit = elem => {
-        console.log(1)
-        handleModal()
+    const onSubmit = elems => {
+        createShift({...elems, created_at: moment().format("YYYY-MM-DD")}, resp => {
+            console.log(resp);
+            handleModal();
+        }, error => {
+            console.log(error);
+        });
     };
     
     const body = (
         <div style={{background: 'white', padding: 40, width: '100%', maxWidth: 500}}>
-            <h2 id="modal-title" style={{textAlign: 'center'}}>Nueva Película</h2>
+            <h2 id="modal-title" style={{textAlign: 'center'}}>Nuevo Turno</h2>
             <div id="modal-body">
-                <Form onSubmit={onSubmit} formElem={createMovieForm} errorMessage={errorMessage} />
+                <Form onSubmit={onSubmit} formElem={createShiftForm} />
             </div>
         </div>
     );
@@ -29,7 +34,7 @@ export default function CreateMovie() {
     return (
     <>
         <Button onClick={handleModal} variant="contained" size="small" color="primary">
-            Nueva Película
+            Nuevo turno
         </Button>
         <CustomModal open={open} handleModal={handleModal} body={body} />
     </>

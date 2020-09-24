@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const createMovieForm = [
     {
         id: 1,
@@ -12,18 +14,16 @@ export const createMovieForm = [
     },
     {
         id: 2,
-        name: "created_date",
+        name: "pub_date",
         title: "Fecha de publicación*",
         inputType: "date",
         type: "primary",
-        placeholder: "My movie date", 
-        minLenght: 2,
-        maxLenght: 10,
-        required: true
+        required: true,
+        max: moment().format("YYYY-MM-DD")
     },
     {
         id: 3,
-        name: "state",
+        name: "status",
         title: "Estado*",
         inputType: "text",
         type: "primary",

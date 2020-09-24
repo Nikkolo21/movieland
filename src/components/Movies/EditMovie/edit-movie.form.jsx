@@ -1,4 +1,6 @@
-export const createMovieForm = [
+import moment from 'moment';
+
+export const editMovieForm = ({name, pub_date, status}) => ([
     {
         id: 1,
         name: "name",
@@ -8,28 +10,29 @@ export const createMovieForm = [
         placeholder: "My movie name", 
         minLenght: 2,
         maxLenght: 100,
-        required: true
+        required: true,
+        value: name
     },
     {
         id: 2,
-        name: "created_date",
+        name: "pub_date",
         title: "Fecha de publicación*",
         inputType: "date",
         type: "primary",
-        placeholder: "My movie date", 
-        minLenght: 2,
-        maxLenght: 10,
-        required: true
+        required: true,
+        value: pub_date,
+        max: moment().format("YYYY-MM-DD")
     },
     {
         id: 3,
-        name: "state",
+        name: "status",
         title: "Estado*",
         inputType: "text",
         type: "primary",
         placeholder: "My project status", 
         minLenght: 2,
         maxLenght: 30,
-        required: true
+        required: true,
+        value: status
     }
-]
+])

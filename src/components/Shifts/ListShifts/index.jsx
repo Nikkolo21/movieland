@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,7 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import CreateMovie from '../CreateMovie';
+import { MdDelete } from "react-icons/md";
+import CreateShift from '../CreateShift';
+import EditShift from '../EditShift';
+import { getShifts } from '../../../api/shiftService';
 
 const useStyles = makeStyles({
   table: {
@@ -17,22 +20,6 @@ const useStyles = makeStyles({
   },
 });
 
-const rows = [
-  {
-    id: 1,
-    name: "Star Wars",
-    created_at: "10/12/2019",
-    status: "Activo",
-    actions: "none"
-  },
-  {
-    id: 2,
-    name: "Indiana Jones",
-    created_at: "10/10/2019",
-    status: "Activo",
-    actions: "none"
-  }
-];
 
 const headers = [
   {
@@ -41,13 +28,8 @@ const headers = [
     align: "center"
   },
   {
-    id: "name",
-    name: "Nombre",
-    align: "center"
-  },
-  {
-    id: "created_at",
-    name: "F. Publicación",
+    id: "shift",
+    name: "Turno",
     align: "center"
   },
   {
@@ -62,30 +44,49 @@ const headers = [
   }
 ]
 
-export default function ListMovies() {
+export default function ListShifts() {
+  const [rows, setRows] = useState(null);
   const classes = useStyles();
+
+  useEffect(() => {
+    const data = [];
+    getShifts(resp => {
+      resp.forEach(e => data.push({
+        id: e.id,
+        ...e.data(),
+        actions:
+        <>
+          <EditShift id={e.id}/>
+          <MdDelete title="Eliminar" style={{marginLeft: 10, fontSize: "1.5em", cursor: "pointer"}}/>
+        </>
+      }));
+      setRows(data);
+    }, error => {
+      console.log(error);
+    });
+  }, []);
 
   return (
     <section style={{maxWidth: 1000}}>
         <div style={{justifyContent: "space-between", display:"flex", padding: 20}}>
-            <span style={{textAlign: "left", fontSize: "1.5em"}}>Películas</span>
-            <CreateMovie/>
+            <span style={{textAlign: "left", fontSize: "1.5em"}}>Turnos</span>
+            <CreateShift/>
         </div>
         <TableContainer component={Paper} style={{boxShadow: "none"}}>
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                 <TableRow>
-                    {
+                  {
                     headers.map(header => <TableCell key={header.id} align={header.align}><b>{header.name}</b></TableCell>)
-                    }
+                  }
                 </TableRow>
                 </TableHead>
                 
                 <TableBody>
-                {rows.map((row) => (
-                    <TableRow key={row.id}>
-                        {headers.map(header => <TableCell key={header.id} align="center">{row[header.id]}</TableCell>)}
-                    </TableRow>
+                { rows && rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {headers.map(header => <TableCell key={header.id} align="center">{row[header.id]}</TableCell>)}        
+                  </TableRow>
                 ))}
                 </TableBody>
             </Table>

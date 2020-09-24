@@ -8,7 +8,6 @@
         border: none;
         height: 70px;
         border-radius: 5px;
-        font-family: 'Inter-Medium';
         font-size: 1em;
         position: relative;
         padding: 0 20px;
@@ -38,7 +37,6 @@
         bottom  : 0;
         height  : 5px;
         width   : 80%;
-        border-bottom: solid 1px $color-primary-2-hex;
     }
     .error {
         color: red;
